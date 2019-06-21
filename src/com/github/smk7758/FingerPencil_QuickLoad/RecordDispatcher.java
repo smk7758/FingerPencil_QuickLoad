@@ -14,17 +14,7 @@ public class RecordDispatcher {
 	RecordService recordService = null;
 	// boolean isRecording = false, isStarted = false;
 
-	public void startRecord(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
-		prepareRecording(videoOutputFolderPath, cameraID, imageView);
-
-		// 以下変数はprepareRecordingで初期化済み
-		imageAnimation.start();
-		recordService.start();
-
-		Main.printDebug("started REC", LogLevel.DEBUG);
-	}
-
-	private void prepareRecording(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
+	public RecordDispatcher(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
 		if (videoOutputFolderPath.getText().isEmpty()) {
 			Main.printDebug("VideoOutputPath is empty.", LogLevel.ERROR);
 			return;
@@ -47,6 +37,13 @@ public class RecordDispatcher {
 				imageView.setImage(recordService.getLastValue());
 			}
 		};
+	}
+
+	public void startRecord() {
+		imageAnimation.start();
+		recordService.start();
+
+		Main.printDebug("started REC", LogLevel.DEBUG);
 	}
 
 	public void stopRecord(ImageView imageView) {

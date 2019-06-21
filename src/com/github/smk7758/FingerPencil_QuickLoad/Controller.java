@@ -22,7 +22,6 @@ public class Controller {
 
 	@FXML
 	public void initialize() {
-		recordDispatcher = new RecordDispatcher();
 	}
 
 	@FXML
@@ -36,7 +35,9 @@ public class Controller {
 
 		if (recordDispatcher.isRecording()) {
 			Main.printDebug("START REC", LogLevel.DEBUG);
-			recordDispatcher.startRecord(videoOutputFolderPath, cameraID, imageView);
+
+			recordDispatcher = new RecordDispatcher(videoOutputFolderPath, cameraID, imageView);
+			recordDispatcher.startRecord();
 		} else {
 			recordDispatcher.stopRecord(imageView);
 		}
@@ -48,7 +49,7 @@ public class Controller {
 			Main.printDebug("It is still recording.", LogLevel.ERROR);
 			return;
 		}
-		
+
 	}
 
 }
