@@ -25,7 +25,8 @@ public class RecordService extends ScheduledService<Image> {
 	VideoCapture vc = null;
 	VideoWriter vw = null;
 	int cameraNumber = 0;
-	Path videoOutputFolderPath, videoOutputFilePath;
+	Path videoOutputFolderPath;
+	Path videoOutputFilePath = null;
 	Mat inputImage = new Mat();
 
 	public RecordService(Path videoOutputFolderPath, int cameraNumber) {
@@ -116,5 +117,9 @@ public class RecordService extends ScheduledService<Image> {
 		Imgcodecs.imencode(".bmp", inputImage, byte_mat);
 
 		return new Image(new ByteArrayInputStream(byte_mat.toArray()));
+	}
+
+	public Path getVideoOutputFilePath() {
+		return videoOutputFilePath;
 	}
 }
