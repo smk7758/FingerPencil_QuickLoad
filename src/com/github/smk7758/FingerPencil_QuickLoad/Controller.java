@@ -18,7 +18,7 @@ public class Controller {
 	@FXML
 	Button recButton, startButton;
 
-	RecordDispatcher recordDispatcher;
+	RecordDispatcher recordDispatcher = null;
 
 	@FXML
 	public void initialize() {
@@ -33,7 +33,7 @@ public class Controller {
 			return;
 		}
 
-		if (recordDispatcher.isRecording()) {
+		if (recordDispatcher == null || recordDispatcher.isNotRecording()) {
 			Main.printDebug("START REC", LogLevel.DEBUG);
 
 			recordDispatcher = new RecordDispatcher(videoOutputFolderPath, cameraID, imageView);
@@ -45,11 +45,15 @@ public class Controller {
 
 	@FXML
 	public void onStartButton() {
-		if (recordDispatcher.isRecording()) {
+		if (recordDispatcher == null) {
+			Main.printDebug("You cannot start because of: recordDispatcher is null.", LogLevel.ERROR);
+			return;
+		} else if (!recordDispatcher.isNotRecording()) {
 			Main.printDebug("It is still recording.", LogLevel.ERROR);
 			return;
 		}
 
+		Main.printDebug("VideoOutputFilePath: " + recordDispatcher.getVideoOutputFilePath().toString(), LogLevel.DEBUG);
 	}
 
 }

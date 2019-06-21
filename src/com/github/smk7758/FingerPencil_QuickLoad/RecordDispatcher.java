@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 public class RecordDispatcher {
 	AnimationTimer imageAnimation = null;
 	RecordService recordService = null;
-	// boolean isRecording = false, isStarted = false;
+	boolean hadBeenRecording = false;
 
 	public RecordDispatcher(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
 		if (videoOutputFolderPath.getText().isEmpty()) {
@@ -48,16 +48,22 @@ public class RecordDispatcher {
 
 	public void stopRecord(ImageView imageView) {
 		Main.printDebug("stopButton", LogLevel.DEBUG);
+
+		if (isNotRecording()) {
+			Main.printDebug("It is not Recording yet. You Must start recording.", LogLevel.ERROR);
+			return;
+		}
+
 		imageAnimation.stop();
 		recordService.cancel();
 
 		imageView.setImage(null);
 		imageAnimation = null;
-		recordService = null;
+		hadBeenRecording = true;
 	}
 
-	public boolean isRecording() {
-		return (imageAnimation == null || recordService == null);
+	public boolean isNotRecording() {
+		return (imageAnimation == null || hadBeenRecording);
 	}
 
 	public Path getVideoOutputFilePath() {
