@@ -19,6 +19,7 @@ public class Controller {
 	Button recButton, startButton;
 
 	RecordDispatcher recordDispatcher = null;
+	ProcessDispatcher processDispatcher = null;
 
 	@FXML
 	public void initialize() {
@@ -54,6 +55,18 @@ public class Controller {
 		}
 
 		Main.printDebug("VideoOutputFilePath: " + recordDispatcher.getVideoOutputFilePath().toString(), LogLevel.DEBUG);
-	}
 
+		if (processDispatcher == null) {
+			processDispatcher = new ProcessDispatcher(recordDispatcher.getVideoOutputFilePath());
+			processDispatcher.start();
+		} else if (!processDispatcher.isRunning()) {
+			Main.printDebug("The process has been finished!", LogLevel.INFO);
+
+			processDispatcher = null;
+		} else {
+			// 実行しているよ！(→ 強制終了？)
+			Main.printDebug("Please wait to complete process.", LogLevel.INFO);
+		}
+
+	}
 }

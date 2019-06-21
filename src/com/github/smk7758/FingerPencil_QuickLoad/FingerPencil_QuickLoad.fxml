@@ -27,7 +27,7 @@
       <RowConstraints />
   </rowConstraints>
    <children>
-      <TextField fx:id="videoOutputFolderPath" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+      <TextField fx:id="videoOutputFolderPath" text="S:\program\TEST" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.valignment="TOP" />
       <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButton" text="START" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP" />
       <Button fx:id="recButton" mnemonicParsing="false" onAction="#onRecButton" text="  REC  " GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
       <Label text="CameraID: " GridPane.columnIndex="2" GridPane.rowIndex="4" />
