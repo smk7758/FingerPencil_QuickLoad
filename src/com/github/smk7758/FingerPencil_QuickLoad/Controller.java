@@ -1,5 +1,7 @@
 package com.github.smk7758.FingerPencil_QuickLoad;
 
+import java.nio.file.Paths;
+
 import com.github.smk7758.FingerPencil_QuickLoad.Main.LogLevel;
 
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ public class Controller {
 
 	RecordDispatcher recordDispatcher = null;
 	ProcessDispatcher processDispatcher = null;
+	private boolean DEBUG_PROCESS = true;
 
 	@FXML
 	public void initialize() {
@@ -46,6 +49,10 @@ public class Controller {
 
 	@FXML
 	public void onStartButton() {
+		if (DEBUG_PROCESS) {
+			recordDispatcher = new RecordDispatcher(Paths.get("S:\\program\\TEST_\\CIMG1780.MOV"));
+		}
+
 		if (recordDispatcher == null) {
 			Main.printDebug("You cannot start because of: recordDispatcher is null.", LogLevel.ERROR);
 			return;
@@ -67,6 +74,5 @@ public class Controller {
 			// 実行しているよ！(→ 強制終了？)
 			Main.printDebug("Please wait to complete process.", LogLevel.INFO);
 		}
-
 	}
 }

@@ -14,6 +14,8 @@ public class RecordDispatcher {
 	RecordService recordService = null;
 	boolean hadBeenRecording = false;
 
+	private Path videoOutputFolderPath = null;
+
 	public RecordDispatcher(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
 		if (videoOutputFolderPath.getText().isEmpty()) {
 			Main.printDebug("VideoOutputPath is empty.", LogLevel.ERROR);
@@ -21,7 +23,7 @@ public class RecordDispatcher {
 		}
 
 		Main.printDebug("videoOutputFolderPath: " + Paths.get(videoOutputFolderPath.getText()).toString(),
-				LogLevel.DEBUG);
+				LogLevel.DEBUG); // TODO
 
 		try {
 			short cameraID_ = Short.valueOf(cameraID.getText());
@@ -37,6 +39,15 @@ public class RecordDispatcher {
 				imageView.setImage(recordService.getLastValue());
 			}
 		};
+	}
+
+	// Debug用
+	public RecordDispatcher(Path videoOutputFolderPath) {
+		this.videoOutputFolderPath = videoOutputFolderPath;
+
+		Main.printDebug("videoOutputFolderPath: " + videoOutputFolderPath.toString(), LogLevel.DEBUG);
+
+		hadBeenRecording = true;
 	}
 
 	public void startRecord() {
@@ -67,6 +78,7 @@ public class RecordDispatcher {
 	}
 
 	public Path getVideoOutputFilePath() {
-		return recordService.getVideoOutputFilePath();
+		return (recordService != null) ? recordService.getVideoOutputFilePath() : videoOutputFolderPath;
+		// Debug用のやつ込み(ちゃんと動いて？)
 	}
 }
