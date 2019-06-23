@@ -6,23 +6,26 @@ import com.github.smk7758.FingerPencil_QuickLoad.Main.LogLevel;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 public class Controller {
 	@FXML
-	TextField cameraID, videoOutputFolderPath, fileName;
+	TextField cameraID, videoOutputFolderPath, filePath;
 	@FXML
 	ImageView imageView;
 	@FXML
 	Text recSecText;
 	@FXML
 	Button recButton, startButton;
+	@FXML
+	CheckBox isUseFilePath;
 
 	RecordDispatcher recordDispatcher = null;
 	ProcessDispatcher processDispatcher = null;
-	private boolean DEBUG_PROCESS = true;
+	private boolean DEBUG_PROCESS = false;
 
 	@FXML
 	public void initialize() {
@@ -40,10 +43,15 @@ public class Controller {
 		if (recordDispatcher == null || recordDispatcher.isNotRecording()) {
 			Main.printDebug("START REC", LogLevel.DEBUG);
 
-			recordDispatcher = new RecordDispatcher(videoOutputFolderPath, cameraID, imageView);
+			recordDispatcher = new RecordDispatcher(videoOutputFolderPath, cameraID, imageView, recSecText);
 			recordDispatcher.startRecord();
+
+			recButton.setText("Stop REC");
 		} else {
 			recordDispatcher.stopRecord(imageView);
+			filePath.setText(recordDispatcher.getVideoOutputFilePath().toString());
+
+			recButton.setText("REC");
 		}
 	}
 
@@ -51,6 +59,8 @@ public class Controller {
 	public void onStartButton() {
 		if (DEBUG_PROCESS) {
 			recordDispatcher = new RecordDispatcher(Paths.get("S:\\program\\TEST_\\CIMG1780.MOV"));
+		} else if (isUseFilePath.isSelected()) {
+			recordDispatcher = new RecordDispatcher(Paths.get(convertToValidPathString(filePath.getText())));
 		}
 
 		if (recordDispatcher == null) {
@@ -74,5 +84,15 @@ public class Controller {
 			// 実行しているよ！(→ 強制終了？)
 			Main.printDebug("Please wait to complete process.", LogLevel.INFO);
 		}
+	}
+
+	private String convertToValidPathString(String path) {
+		path = path.trim();
+
+		if (path.startsWith("\"") && path.endsWith("\"")) {
+			path = path.substring(1, path.length() - 1);
+		}
+
+		return path;
 	}
 }

@@ -8,15 +8,17 @@ import com.github.smk7758.FingerPencil_QuickLoad.Main.LogLevel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 public class RecordDispatcher {
 	AnimationTimer imageAnimation = null;
 	RecordService recordService = null;
 	boolean hadBeenRecording = false;
+	long startMillSec = 0;
 
 	private Path videoOutputFolderPath = null;
 
-	public RecordDispatcher(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView) {
+	public RecordDispatcher(TextField videoOutputFolderPath, TextField cameraID, ImageView imageView, Text recSecText) {
 		if (videoOutputFolderPath.getText().isEmpty()) {
 			Main.printDebug("VideoOutputPath is empty.", LogLevel.ERROR);
 			return;
@@ -37,6 +39,7 @@ public class RecordDispatcher {
 			@Override
 			public void handle(long now) {
 				imageView.setImage(recordService.getLastValue());
+				recSecText.setText((int) ((System.currentTimeMillis() - startMillSec) / 1000) + " (s)");
 			}
 		};
 	}
@@ -54,6 +57,7 @@ public class RecordDispatcher {
 		imageAnimation.start();
 		recordService.start();
 
+		startMillSec = System.currentTimeMillis();
 		Main.printDebug("started REC", LogLevel.DEBUG);
 	}
 
